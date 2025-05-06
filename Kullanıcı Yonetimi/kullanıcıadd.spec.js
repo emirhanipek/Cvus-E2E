@@ -1,0 +1,34 @@
+import { test, expect } from '@playwright/test';
+import { login } from './login.spec.js'; // login fonksiyonunu içe aktar 
+
+test.beforeEach(async ({ page }) => {
+  await login(page); // 🔥 Login işlemi burada
+});
+
+test('Kullanıcı ekleme başarıyla tamamlanmalı', async ({ page }) => { 
+    await page.getByRole('button', { name: 'Kullanıcılar' }).click();
+    await page.getByRole('button', { name: '+ Kullanıcı Ekle' }).click();
+    await page.getByRole('textbox').first().click();
+    await page.getByRole('textbox').first().press('CapsLock');
+    await page.getByRole('textbox').first().fill('T');
+    await page.getByRole('textbox').first().press('CapsLock');
+    await page.getByRole('textbox').first().fill('Tahir ');
+    await page.getByRole('textbox').first().press('CapsLock');
+    await page.getByRole('textbox').first().fill('Tahir R');
+    await page.getByRole('textbox').first().press('CapsLock');
+    await page.getByRole('textbox').first().fill('Tahir Reis');
+    await page.getByRole('textbox').first().press('Tab');
+    await page.getByRole('textbox').nth(1).press('CapsLock');
+    await page.getByRole('textbox').nth(1).fill('Y');
+    await page.getByRole('textbox').nth(1).press('CapsLock');
+    await page.getByRole('textbox').nth(1).fill('Yıldız');
+    await page.getByRole('textbox').nth(1).press('Tab');
+    await page.locator('input[type="email"]').fill('thrcn.yldz.reis@gmail.com');
+    await page.locator('span').filter({ hasText: 'Bir firma seçin' }).first().click();
+    await page.locator('div').filter({ hasText: /^Test Company$/ }).click();
+    await page.locator('div').filter({ hasText: /^Bir rol seçin$/ }).click();
+    await page.locator('div').filter({ hasText: 'admin test' }).nth(1).click();
+    await expect(page.getByRole('button', { name: 'Kaydet' })).toBeEnabled();
+    await page.getByRole('button', { name: 'Kaydet' }).click();    
+    await page.getByRole('button', { name: 'Tamam' }).click();
+});
