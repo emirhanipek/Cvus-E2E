@@ -25,10 +25,12 @@ test('Kullanıcı ekleme başarıyla tamamlanmalı', async ({ page }) => {
     await page.getByRole('textbox').nth(1).press('Tab');
     await page.locator('input[type="email"]').fill('thrcn.yldz.reis@gmail.com');
     await page.locator('span').filter({ hasText: 'Bir firma seçin' }).first().click();
-    await page.locator('div').filter({ hasText: /^Test Company$/ }).click();
-    await page.locator('div').filter({ hasText: /^Bir rol seçin$/ }).click();
-    await page.locator('div').filter({ hasText: 'admin test' }).nth(1).click();
+    await page.locator('div').filter({ hasText: /^efe$/ }).click();
+    await page.locator("body > div:nth-child(2) > div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > form:nth-child(2) > div:nth-child(1) > div:nth-child(4) > div:nth-child(1) > div:nth-child(2) > span:nth-child(1)").click();
+    await page.locator('div').filter({ hasText: /^admin test$/ }).nth(1).click();
+    page.waitForTimeout(1000);
     await expect(page.getByRole('button', { name: 'Kaydet' })).toBeEnabled();
     await page.getByRole('button', { name: 'Kaydet' }).click();    
     await page.getByRole('button', { name: 'Tamam' }).click();
 });
+
