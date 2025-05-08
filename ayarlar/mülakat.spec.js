@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {login} from '../Kullanıcı Yonetimi/login.spec';
 
-test('test', async ({ page }) => {
+test('mülakat ayarları başarıyla gerçekleşmeli', async ({ page }) => {
 
   login(page)
   await page.getByRole('button', { name: 'Ayarlar' }).click();
