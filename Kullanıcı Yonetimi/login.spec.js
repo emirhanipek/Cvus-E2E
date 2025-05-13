@@ -1,5 +1,5 @@
 export async function login(page) {
-  await page.goto('https://portal.softwareoptimize.com/project');
+  await page.goto('https://portal.softwareoptimize.com/');
 
   await page.getByRole('textbox', { name: 'E-posta' }).click();
   await page.getByRole('textbox', { name: 'E-posta' }).fill('melih.demir@gmail.com');
