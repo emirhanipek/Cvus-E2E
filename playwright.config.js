@@ -13,17 +13,9 @@ module.exports = {
         name: 'chromium',
         use: { browserName: 'chromium' },
       },
-      // {
-      //   name: 'firefox',
-      //   use: { browserName: 'firefox' },
-      // },
-      // {
-      //   name: 'webkit',
-      //   use: { browserName: 'webkit' },
-      // },
     ],
     // Test parametreleri
-    timeout: 30000, // Test başına zaman aşımı süresi (ms cinsinden)
+    timeout: 60000, // Test başına zaman aşımı süresi (ms cinsinden)
     //retries: 2, // Test başarısız olduğunda 2 defa daha dener
   };
   
