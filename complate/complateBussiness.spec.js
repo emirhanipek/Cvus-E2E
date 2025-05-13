@@ -1,50 +1,62 @@
 import { test } from '@playwright/test';
-import {login} from '../Kullanıcı Yonetimi/login.spec';
-import {addPosition} from './addPozisyon.spec';
-import { gofakemail } from './fakemail.spec'
+import { login } from '../Kullanıcı Yonetimi/login.spec';
+import { addPosition } from './addPozisyon.spec.js';
+import { fillFakeEmail } from './fillFakeEmail.js'
 test('test', async ({ page, browser }) => {
-  test.setTimeout(60000);
+  test.setTimeout(360000);
 
-  login(page)
-
-  //addPosition(page)
+  //login olma
+  try {
+    login(page)
+    console.log("giriş yapıldı")
+    await page.waitForTimeout(500)
+  }
+  catch (e) {
+    console.log(e + "Giriş Yapılamadı")
+  }
 
   await page.waitForTimeout(6000)
- 
+
+  //pozisyon oluşturma
+  try {
+    console.log("pozisyon ekleme")
+    //addPosition(page)
+  }
+  catch (e) {
+    console.log(e + "Giriş Yapılamadı")
+  }
+
+  //ozgecmise tıkladı
   await page.getByRole('button', { name: 'Özgeçmişler' }).click();
-  await page.waitForTimeout(500)
-  
+  await page.waitForTimeout(1000)
+
+  //en üstteki cv tıkladı
   const element = await page.waitForSelector('xpath=//*[@id="app-container"]/div[2]/div[5]/div[1]/div[2]/div/table/div/tbody/tr[1]');
   await element.click();
   await page.waitForTimeout(500);
 
+
+  //iletişime tıkla
   await page.locator('div').filter({ hasText: /^İletişim$/ }).click();
   await page.waitForTimeout(500)
 
+  //eposta düzenlemeye bas
+  await page.locator('h1:text("E-Posta") >> xpath=../../..//i[contains(@class, "fa-pen")]').click();
 
-  const targetElement = await page.waitForSelector('xpath=//*[@id="app-container"]/div[2]/div[3]/div/div[4]/div/div/div[2]/div[2]');
-  await targetElement.click();  await page.waitForTimeout(500)
-  await page.getByRole('button', { name: '' }).nth(1).click();
-  await page.waitForTimeout(500)
-  // Yeni sekme için context oluştur
-  const context = await browser.newContext();
 
-  // Yeni sekmeyi aç
-  //gofakemail()
+  //yeni bir sekme oluştur ve fake bir mail adresini kopyala
+    // try {
+    //   await fillFakeEmail(browser, page);
+    // } catch (error) {
+    //  console.log(error + "mail sorunu")  
+    // }
 
-  // Geri dönmek istersen:
-  await page.bringToFront();
-  await page.getByRole('textbox', { name: 'İletişim Adresi' }).click();
-  await page.waitForTimeout(500)
-  await page.getByRole('textbox', { name: 'İletişim Adresi' }).fill(''); // temizle
-  await page.waitForTimeout(500)
 
-  //await page.keyboard.press('Meta+V'); // Command + V (Mac)
 
 
   //sonra silinecek
   const input = page.getByRole('textbox', { name: 'İletişim Adresi' });
-  await input.fill('test3@siriusaitech.com'); // önce temizler, sonra yazar
+  await input.fill('test7@siriusaitech.com'); // önce temizler, sonra yazar
   await page.waitForTimeout(500); // sonra yarım saniye bekler
 
 
@@ -56,38 +68,65 @@ test('test', async ({ page, browser }) => {
 
   //pozisyon ekle 
   await page.getByRole('button', { name: '' }).click();
-  await page.waitForTimeout(500)
+  await page.waitForTimeout(1500)
 
-  
-  //pozisyon ekleme tuşu varsa basar yoksa devam eder
+
+  //pozisyon ekleme hicbir pozisyon yokken tuşu varsa basar yoksa devam eder
   const button = page.locator('button.bg-cvus-gradient');
   if (await button.count() > 0) {
-  await button.click();
+    await button.click();
   }
 
-  //dropdown acar
+  //pozisyon eklemede dropdown acar
   await page.locator('.multiselect__select').click();
   await page.waitForTimeout(500)
 
-  //en üstteki veriyi secer
-  await page.click('#null-0');
-  await page.waitForTimeout(500)
+  // pozisyon eklemedeki tüm <li> elementlerini al
+  const listItems = await page.$$('ul#listbox-null li');
 
+  // pozisyon eklemediki tüm li elemanlarını rastgele bir index seç
+  const randomIndex = Math.floor(Math.random() * listItems.length);
 
-  //kaydet tıkla
-  await page.getByRole('button', { name: 'Kaydet' }).click();
-  await page.waitForTimeout(500)
+  // Rastgele <li> elementine tıkla
+  if (listItems.length > 0) {
+    await listItems[randomIndex].click();
+    console.log(`Tıklanan index: ${randomIndex}`);
+  } else {
+    console.log('Hiç <li> bulunamadı!');
+  }
+  await page.waitForTimeout(1500)
 
+  //kayıt et tuşunua bas
+  const dropdownButton = await page.waitForSelector('xpath=//*[@id="app-container"]/div[2]/div[5]/div[2]/div[2]/div/div[2]/div/div[1]/div[2]/form/div[2]/div/div/button/div');
+  await dropdownButton.click();
+  await page.waitForTimeout(5000)
 
-  //tamam tıkla
-  await page.getByRole('button', { name: 'Tamam' }).click();
-  await page.waitForTimeout(500)
+const allTrs = page.locator('tbody tr');
+const trCount = await allTrs.count();
 
-  await page.locator('.hover\\:bg-gray-50').first().click();
-  await page.waitForTimeout(randomWaitTime); // Rastgele bekleme süresi
+if (trCount > 0) {
+  const lastTr = allTrs.nth(trCount - 1); // En son <tr>
+  const allTds = lastTr.locator('td');
+  const tdCount = await allTds.count();
 
+  if (tdCount > 0) {
+    for (let i = 0; i < tdCount; i++) {
+      const td = allTds.nth(i);
+      const clickable = td.locator('a, button, span, div');
 
+      if (await clickable.count() > 0) {
+        const element = clickable.first();
+        await element.scrollIntoViewIfNeeded();
+        await element.hover(); // Hover olayı tetikle
+        await element.click({ force: true }); // force ile tıkla
+        console.log(`Zorla Satır ${trCount - 1}, hücre ${i} tıklandı.`);
+        break;
+      }
+    }
+  }
+}
 
+  //soru onermi kısmı
   await page.getByRole('button', { name: 'Soru Ayarları Ön görüşme sü' }).click();
   await page.waitForTimeout(500)
 
@@ -101,14 +140,32 @@ test('test', async ({ page, browser }) => {
   await page.waitForTimeout(500)
 
   await page.getByRole('button', { name: 'Soru Öner', exact: true }).click();
+  await page.waitForTimeout(500)
+
   await page.locator('[id="\\30 "]').check();
+  await page.waitForTimeout(500)
+
   await page.getByRole('button', { name: 'Kaydet' }).click();
+  await page.waitForTimeout(500)
+
   await page.getByRole('button', { name: 'Tamam' }).click();
+  await page.waitForTimeout(500)
+
   await page.getByRole('button', { name: '' }).click();
+  await page.waitForTimeout(500)
+
   await page.locator('tr:nth-child(3) > div > div > td > .inline-flex > .flex').click();
+  await page.waitForTimeout(500)
+
   await page.getByRole('button', { name: 'Ön Görüşmeyi Başlat' }).click();
+  await page.waitForTimeout(500)
+
   await page.getByRole('button', { name: 'Oluşturmadan Devam Et' }).click();
+  await page.waitForTimeout(500)
+
   await page.getByRole('button', { name: 'Tamam' }).click();
+  await page.waitForTimeout(500)
+
   await page3.locator('iframe[name="aswift_4"]').contentFrame().getByRole('button', { name: 'Close ad' }).click();
   await page3.getByRole('link', { name: 'info@cvusai.com 15 s' }).click();
   const page4Promise = page3.waitForEvent('popup');
