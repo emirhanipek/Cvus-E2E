@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {login} from '../Kullanıcı Yonetimi/login.spec';
 
-test('test', async ({ page }) => {
+test('yasal bilgiler başarıyla güncellenmeli', async ({ page }) => {
 
   login(page)
 

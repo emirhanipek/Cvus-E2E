@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await login(page); // 🔥 Login işlemi burada
 });
 
-test('Kullanıcı ekleme başarıyla tamamlanmalı', async ({ page }) => { 
+test('Kullanıcı ekleme işlemi başarıyla tamamlanmalı', async ({ page }) => { 
     await page.getByRole('button', { name: 'Kullanıcılar' }).click();
     await page.getByRole('button', { name: '+ Kullanıcı Ekle' }).click();
     await page.getByRole('textbox').first().click();

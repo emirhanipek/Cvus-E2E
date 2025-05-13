@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await login(page); // 🔥 Login işlemi burada
 });
 
-test('Rol ekleme başarıyla tamamlanmalı', async ({ page }) => {
+test('Rol ekleme işlemi başarıyla tamamlanmalı', async ({ page }) => {
 
 
 await page.getByRole('button', { name: 'Roller' }).click();

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {login} from '../Kullanıcı Yonetimi/login.spec';
 
-test('test', async ({ page }) => {
+test('referans bilgileri başarıyla güncellenmeli', async ({ page }) => {
 
   login(page)
 

@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 
 
 
-test('Firma Ekle',  async ({ page }) => {
+test('Firma ekleme başarıyla gerçekleşmeli',  async ({ page }) => {
     await page.getByRole('button', { name: 'Kullanıcılar' }).click();
     await page.getByRole('button', { name: 'Firmalar' }).click();
     await page.getByRole('button', { name: '+ Firma Ekle' }).click();
