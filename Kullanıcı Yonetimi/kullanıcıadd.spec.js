@@ -30,7 +30,7 @@ test('Kullanıcı ekleme başarıyla tamamlanmalı', async ({ page }) => {
     await page.locator('div').filter({ hasText: /^Admin$/ }).click();
     await page.getByRole('button', { name: 'Kaydet' }).click();
     await page.getByRole('button', { name: 'Tamam' }).click();
-    await page.getByRole('row', { name: '  1 Tahir Can Yıldız Admin' }).getByRole('button').nth(1).click();
+    await page.getByRole('row', { name: 'Tahir Can Yıldız Admin' }).getByRole('button').nth(1).click();
     await page.getByRole('button', { name: 'Evet, sil!' }).click();
     await page.getByRole('button', { name: 'Tamam' }).click();
 });
