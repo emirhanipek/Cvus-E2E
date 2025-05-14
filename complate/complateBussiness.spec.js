@@ -2,6 +2,10 @@ import { test } from '@playwright/test';
 import { login } from '../Kullanıcı Yonetimi/login.spec';
 import { addPosition } from './addPozisyon.spec.js';
 import { fillFakeEmail } from './fillFakeEmail.js'
+import generateRandomTitle from './randomPositionName'
+
+
+
 test('test', async ({ page, browser }) => {
   test.setTimeout(360000);
 
@@ -19,13 +23,15 @@ test('test', async ({ page, browser }) => {
 
   //pozisyon oluşturma
   try {
-    console.log("pozisyon ekleme")
-    //addPosition(page)
+    const randomTitle = generateRandomTitle()
+    console.log(randomTitle)
+    await addPosition(page , randomTitle)
   }
   catch (e) {
-    console.log(e + "Giriş Yapılamadı")
+    console.log(e + " Giriş Yapılamadı")
   }
 
+  
   //ozgecmise tıkladı
   await page.getByRole('button', { name: 'Özgeçmişler' }).click();
   await page.waitForTimeout(1000)
